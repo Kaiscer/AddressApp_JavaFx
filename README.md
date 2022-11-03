@@ -4,7 +4,7 @@
 
 ***Parte 1: Scene Builder***
 
-![First Step!](Img_FirstStep.png "Solo mostramos el AddressApp")
+![First Step!](src/main/resources/Img_FirstStep.png "Solo mostramos el AddressApp")
 
 _______________________________________________________________________________________________________
 
@@ -12,6 +12,6 @@ ________________________________________________________________________________
 
 ***Parte 2: Modelo y TableView***
 
-![Second Step!](Img_SecondStep.png "Mostramos la tabla y el contenido")
+![Second Step!](src/main/resources/Img_SecondStep.png "Mostramos la tabla y el contenido")
 
 _______________________________________________________________________________________________________

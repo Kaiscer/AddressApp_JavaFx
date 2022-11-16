@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -29,6 +30,9 @@ public class MainApp extends Application {
 
     //Instancia de objeto ObservaleList para manejar los datos y añadirlos
     private ObservableList<Person> personData = FXCollections.observableArrayList();
+    private Stage stage
+            ;
+
     @Override
     public void start(Stage stage){
         stage.setTitle("AddressApp");
@@ -37,6 +41,8 @@ public class MainApp extends Application {
         stage.setScene(scene);
         stage.show();
 
+        this.stage = stage;
+        this.stage.getIcons().add(new javafx.scene.image.Image("file:resource/images/addressBook_icon.png"));
 
     }
 

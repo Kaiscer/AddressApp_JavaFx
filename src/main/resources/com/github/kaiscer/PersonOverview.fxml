@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.kaiscer.PersonOverviewController">
+<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.kaiscer.controllers.PersonOverviewController">
    <children>
       <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -45,25 +45,25 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="lbFirsName" text="FirstName" />
-                        <Label fx:id="lbLastName" text="Last Name" GridPane.rowIndex="1" />
-                        <Label fx:id="lbStreet" text="Street" GridPane.rowIndex="2" />
-                        <Label fx:id="lbCity" text="City" GridPane.rowIndex="3" />
-                        <Label fx:id="lbPostalCode" text="Postal Code" GridPane.rowIndex="4" />
-                        <Label fx:id="lbBirthday" text="Birthday" GridPane.rowIndex="5" />
-                        <Label text="Label" GridPane.columnIndex="1" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="FirsName" text="FirstName" />
+                        <Label fx:id="LastName" text="Last Name" GridPane.rowIndex="1" />
+                        <Label fx:id="Street" text="Street" GridPane.rowIndex="2" />
+                        <Label fx:id="City" text="City" GridPane.rowIndex="3" />
+                        <Label fx:id="PostalCode" text="Postal Code" GridPane.rowIndex="4" />
+                        <Label fx:id="Birthday" text="Birthday" GridPane.rowIndex="5" />
+                        <Label fx:id="lbFirstName" text="Label" GridPane.columnIndex="1" />
+                        <Label fx:id="lbLastName" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lbStreet" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lbCity" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lbPostalCode" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="lbBirthday" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
                   <HBox layoutX="218.0" layoutY="259.0" spacing="5.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="218.0" AnchorPane.rightAnchor="27.5" AnchorPane.topAnchor="259.0">
                      <children>
-                        <Button fx:id="btnNew" mnemonicParsing="false" text="New..." />
-                        <Button fx:id="btnEdit" mnemonicParsing="false" text="Edit..." />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" text="Delete" />
+                        <Button fx:id="btnNew" mnemonicParsing="false" onAction="#handleNewPerson" text="New..." />
+                        <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditPerson" text="Edit..." />
+                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeletePerson" text="Delete" />
                      </children>
                   </HBox>
                </children>

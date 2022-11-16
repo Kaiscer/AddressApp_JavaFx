@@ -1,4 +1,4 @@
-package com.github.kaiscer;
+package com.github.kaiscer.model;
 
 import javafx.beans.property.*;
 

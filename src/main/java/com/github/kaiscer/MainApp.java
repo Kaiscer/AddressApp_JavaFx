@@ -3,18 +3,25 @@ package com.github.kaiscer;
 import com.github.kaiscer.controllers.PersonEditDialogController;
 import com.github.kaiscer.controllers.PersonOverviewController;
 import com.github.kaiscer.model.Person;
+import com.github.kaiscer.model.PersonListWrapper;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.bind.*;
+import java.io.File;
 import java.io.IOException;
+
+import java.util.prefs.Preferences;
+
 
 public class MainApp extends Application {
 
@@ -24,28 +31,32 @@ public class MainApp extends Application {
     private static final String PATH_PERSON_EDIT = "PersonEditDialog.fxml";
     private BorderPane rootLayout;
     private AnchorPane personOverview;
-    private PersonEditDialogController personEditDialogController;
 
     private Stage primaryStage;
 
     //Instancia de objeto ObservaleList para manejar los datos y añadirlos
     private ObservableList<Person> personData = FXCollections.observableArrayList();
-    private Stage stage
-            ;
 
+    /**
+     * In this method we initialise the loadLayout
+     * @param primaryStage
+     */
     @Override
-    public void start(Stage stage){
-        stage.setTitle("AddressApp");
+    public void start(Stage primaryStage){
+        primaryStage.setTitle("AddressApp");
         loadLayouts();
         Scene scene = new Scene(rootLayout);
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-        this.stage = stage;
-        this.stage.getIcons().add(new javafx.scene.image.Image("file:resource/images/addressBook_icon.png"));
+        this.primaryStage = primaryStage;
+        this.primaryStage.getIcons().add(new javafx.scene.image.Image("file:resource/images/addressBook_icon.png"));
 
     }
 
+    /**
+     * We manage all layouts in one single method
+     */
     private void loadLayouts() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -95,7 +106,7 @@ public class MainApp extends Application {
     public boolean showPersonEditDialog(Person person){
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("PersonEditDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource(PATH_PERSON_EDIT));
             AnchorPane page = (AnchorPane) loader.load();
 
             //Create the dialog Stage
@@ -120,7 +131,97 @@ public class MainApp extends Application {
             e.printStackTrace();
             return false;
         }
+
     }
+
+    /**
+     * Returns the preference of the person file, i.e. the file that was last opened.
+     * @return
+     */
+    public File getPersonFilePath(){
+        Preferences pref = Preferences.userNodeForPackage(MainApp.class);
+        String filePath = pref.get("filePath", null);
+        if (filePath != null){
+            return new File(filePath);
+        }else {
+             return null;
+        }
+
+    }
+
+    public void setPersonFilePath(File file){
+        Preferences pref = Preferences.userNodeForPackage(MainApp.class);
+        if (file != null){
+            pref.put("filePath", file.getPath());
+            // Update the stage title.
+            primaryStage.setTitle("AddressApp - " + file.getName());
+        }else{
+            pref.remove("filePath");
+            // Update the stage title.
+            primaryStage.setTitle("AddressApp");
+        }
+    }
+
+    /**
+     * Loads person data from the specified file. The current person data will
+     *  * be replaced.
+     * @param file
+     */
+    public void loadPersonDataFromFile(File file){
+        try {
+            JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+            Unmarshaller um = context.createUnmarshaller();
+
+            // Reading XML from the file and unmarshalling.
+            PersonListWrapper wrapper = (PersonListWrapper) um.unmarshal(file);
+
+            personData.clear();
+            personData.addAll(wrapper.getPersons());
+
+            // Save the file path to the registry.
+            setPersonFilePath(file);
+
+        } catch (Exception e) { // We Capture any exception
+           e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Could not load data from file\n" + file.getPath());
+            alert.showAndWait();
+        }
+    }
+
+    public void savePersonDataToFile(File file){
+
+        try {
+            JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Wrapping our person data.
+            PersonListWrapper wrapper = new PersonListWrapper();
+            wrapper.setPersons(personData);
+
+            // Marshalling and saving XML to the file.
+            m.marshal(wrapper, file);
+
+            // Save the file path to the registry.
+            setPersonFilePath(file);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();// We Capture any exception
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText(null);
+            alert.setContentText("Could not save data from file:\n" + file.getPath());
+            alert.showAndWait();
+        }
+    }
+
+
 
     public static void main(String[] args) {
         launch();

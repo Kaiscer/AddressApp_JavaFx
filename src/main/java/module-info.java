@@ -1,7 +1,8 @@
 module com.github.kaiscer {
     requires javafx.controls;
     requires javafx.fxml;
-
+    requires java.prefs;
+    requires java.xml.bind;
 
 
     opens com.github.kaiscer to javafx.fxml;
